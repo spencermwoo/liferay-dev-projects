@@ -10,6 +10,8 @@ Open windows explorer with [`dir`](https://github.com/SpencerWoo/liferay-dev-pro
 
 Open sublime via args with [`sub`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L5-L7)
 
+![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/sub.gif)
+
 Open Windows `hosts` file directly with [`host`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L9-L11)
 
 Open `.bashrc` file directly with [`rc`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L13-L15)
@@ -23,9 +25,13 @@ Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/maste
 
    * Add [bash autocompletion](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L99-L120) to the above `cds`
 
+![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/cds2.gif)
+
 Fetch a pull for direct review with [`pr`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L122-L124)
 
 Clear Tomcat directories with [`dc`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L150-L157)
+
+![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/dc.gif)
 
 Additionally drop and recreate database with [`dcf`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L159-L161)
 Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L126-L148)
