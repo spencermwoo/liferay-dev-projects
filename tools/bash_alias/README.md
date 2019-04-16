@@ -1,6 +1,6 @@
-I'll leave the standard aliases to develop from your own preference.
+Highly recommend the first two sections.
 
-Here are ones that intersect usefulness and uniqueness.  Highly recommend the first section.
+I'll leave the standar aliases to develop from your own preference.  These are the more unique and useful ones.
 
 
 ----
@@ -23,17 +23,121 @@ Refresh aliases with `sb`
 
 
 # Liferay
+Quickly navigate to module (MCD alternative)
+```
+is_cwd_git() {
+  if ( git rev-parse --git-dir > /dev/null 2>&1 ); then
+    return 0
+  fi
 
-I'm a reviewer
+  return 1
+}
+
+is_cwd_liferayDXP() {
+  if is_cwd_git; then
+    local gitFolderPath="$(git rev-parse --show-toplevel)"
+
+    if [ -d $gitFolderPath/portal-kernel ] && [ -d $gitFolderPath/modules ]; then
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+cds() {
+  if [ -n "$1" ]; then
+    local folderPath
+
+    if is_cwd_liferayDXP; then
+      pushd $(git rev-parse --show-toplevel) > /dev/null
+
+      #folderPath="$(git ls-files | grep -m 1 "$1/bnd.bnd" | head -1 | xargs -n1 dirname)"
+      #folderPath="$(git ls-files \
+            #| awk -v moduleRegex=".*$1[^/]*\/(app|bnd).bnd" -v simpleRegex=".*$1" \
+            #     '$0 ~ moduleRegex || $0 ~ simpleRegex {print; exit}' \
+            #| xargs -n1 dirname)"
+
+      #Search more strictly - match search term exactly in module name
+      folderPath="$(git ls-files \
+        | awk -v moduleRegex="/$1/((app|bnd).bnd|build(.gradle|.xml))" \
+          '$0 ~ moduleRegex {print; exit}' \
+        | xargs -n1 dirname)
+"
+      #Search not as strictly - contains search term in module name
+      if [ -z "$folderPath" ]; then
+        folderPath="$(git ls-files \
+          | awk -v moduleRegex="$1/((app|bnd).bnd|build(.gradle|.xml))" \
+            '$0 ~ moduleRegex {print; exit}' \
+          | xargs -n1 dirname)"
+      fi
+
+      if [ -n "$folderPath" ]; then
+        folderPath="$(git rev-parse --show-toplevel)/$folderPath"
+      fi
+
+      popd > /dev/null
+    fi
+
+    if [ -z "$folderPath" ]; then
+      if is_cwd_git; then
+        pushd $(git rev-parse --show-toplevel) > /dev/null
+
+        folderPath="$(git ls-files | grep -m 1 "$1/" | xargs -n1 dirname)"
+
+        if [ -n "$folderPath" ]; then
+          folderPath="$(git rev-parse --show-toplevel)/$folderPath"
+        fi
+
+        popd > /dev/null
+      fi
+
+      if [ -z "$folderPath" ]; then
+        folderPath="$(find . -type d -name "*$1*" -print0 -quit)"
+      fi
+    fi
+
+    if [ -n "$folderPath" ]; then
+      cd -- $folderPath
+    fi
+  fi
+}
+```
+
+Add autocompletion to `cds` above
+```
+_cds()
+{
+  if [ "${#COMP_WORDS[@]}" != "2" ] || (! is_cwd_git); then
+    return
+  fi
+  
+  # keep the suggestions in a local variable
+  local suggestions=($(compgen -W "$(pushd $(git rev-parse --show-toplevel) > /dev/null;git ls-files modules/apps | grep "bnd.bnd" | grep -v "/test/" | awk -F"/" '{print $(NF-1)}')" -- "${COMP_WORDS[1]}"))
+
+  if [ "${#suggestions[@]}" == "1" ]; then
+    # if there's only one match, we remove the command literal
+    # to proceed with the automatic completion of the number
+    local number=$(echo ${suggestions[0]/%\ */})
+    COMPREPLY=("$number")
+  else
+    # more than one suggestions resolved,
+    # respond with the suggestions intact
+    COMPREPLY=("${suggestions[@]}")
+  fi
+}
+
+complete -F _cds cds
+```
+
+Fetch a pull for review.
 ```
 pr(){
 	eval "git fetch origin pull/$@/head:pr-$@"
 }
 ```
 
-
-
-Tomcat - clear temporary directories
+Clear Tomcat directories.
 ```
 dc(){
 	if ["$1" = ""]; then
