@@ -1,7 +1,7 @@
 Search Engines are essentially aliases for the Chrome omnibar.
 
 Here's an example of it working
-![](search_engine.gif)
+![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/search_engines/search_engine.gif)
 
 You can set Chrome Search Engines by
 
