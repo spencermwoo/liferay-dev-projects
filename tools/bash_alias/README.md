@@ -10,7 +10,7 @@ I'll leave the standar aliases to develop from your own preference.  These are t
 
 [`sub`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L5-L7) : Open sublime via args 
 
-![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/sub.gif)
+![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/sub2.gif)
 
 [`host`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L9-L11) : Open Windows `hosts` file directly
 
