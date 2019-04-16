@@ -6,35 +6,35 @@ I'll leave the standar aliases to develop from your own preference.  These are t
 ----
 # Develop
 
-Open windows explorer with [`dir`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L1-L3)
+[`dir`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L1-L3) : Open windows explorer
 
-Open sublime via args with [`sub`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L5-L7)
+[`sub`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L5-L7) : Open sublime via args 
 
 ![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/sub.gif)
 
-Open Windows `hosts` file directly with [`host`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L9-L11)
+[`host`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L9-L11) : Open Windows `hosts` file directly
 
-Open `.bashrc` file directly with [`rc`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L13-L15)
+[`rc`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L13-L15) : Open `.bashrc` file directly
 
-Refresh aliases with [`sb`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L17-L19)
+[`sb`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L17-L19) : Refresh aliases 
 
 
 # Liferay
-Quickly navigate to module (MCD alternative) with [`cds`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L41-L97)
+[`cds`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L41-L97) : Instantly navigate to module (similiar to [MCD](https://github.com/holatuwol/liferay-faster-deploy/tree/master/gitcd#cd-to-module-root)) 
 Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L21-L39)
 
    * Add [bash autocompletion](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L99-L120) to the above `cds`
 
 ![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/cds2.gif)
 
-Fetch a pull for direct review with [`pr`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L122-L124)
+[`pr`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L122-L124) : Fetch a pull for direct review 
 
-Clear Tomcat directories with [`dc`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L150-L157)
+[`dc`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L150-L157) : Clear Tomcat directories
 
 ![](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/gifs/dc.gif)
 
-Additionally drop and recreate database with [`dcf`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L159-L161)
-Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L126-L148)
+ * Additionally drop and recreate database with [`dcf`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L159-L161) 
+ Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L126-L148)
 
 # Standard Usage
 
