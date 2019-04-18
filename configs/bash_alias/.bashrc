@@ -103,7 +103,7 @@ _cds()
   fi
   
   # keep the suggestions in a local variable
-  local suggestions=($(compgen -W "$(pushd $(git rev-parse --show-toplevel) > /dev/null;git ls-files modules/apps | grep "bnd.bnd" | grep -v "/test/" | awk -F"/" '{print $(NF-1)}')" -- "${COMP_WORDS[1]}"))
+  local suggestions=($(compgen -W "$(pushd $(git rev-parse --show-toplevel) > /dev/null; git ls-files | awk -F"/" -v moduleRegex="/.lfrbuild-portal$" '$0 ~ moduleRegex {print $(NF-1)}')" -- "${COMP_WORDS[1]}"))
 
   if [ "${#suggestions[@]}" == "1" ]; then
     # if there's only one match, we remove the command literal
@@ -148,8 +148,8 @@ dbRecreate(){
 }
 
 dc(){
-  if ["$1" = ""]; then
-    echo "USAGE: dc <tomcat-directory>"
+  if [ -z "$1" ]; then
+    echo "USAGE: dc tomcat-9.0.10"
   else
     echo "RUNNING: 'rm -rf work; rm -rf osgi/state; rm -rf $@/temp; rm -rf $@/work'"
     eval "rm -rf work; rm -rf osgi/state; rm -rf $@/temp; rm -rf $@/work"

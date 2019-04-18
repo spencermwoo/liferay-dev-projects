@@ -2,7 +2,6 @@ Highly recommend the first two sections.
 
 I'll leave the standar aliases to develop from your own preference.  These are the more unique and useful ones.
 
-
 ----
 # Develop
 
@@ -20,7 +19,7 @@ I'll leave the standar aliases to develop from your own preference.  These are t
 
 
 # Liferay
-[`cds`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L41-L97) : Instantly navigate to module (similiar to [MCD](https://github.com/holatuwol/liferay-faster-deploy/tree/master/gitcd#cd-to-module-root)) 
+[`cds`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L41-L97) : Instantly navigate to module (similiar to [MCD's](https://github.com/holatuwol/liferay-faster-deploy/tree/master/gitcd#cd-to-module-root)) 
 Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L21-L39)
 
    * Add [bash autocompletion](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L99-L120) to the above `cds`
@@ -36,9 +35,9 @@ Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/maste
  * Additionally drop and recreate database with [`dcf`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L159-L161) 
  Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/tools/bash_alias/.bashrc#L126-L148)
 
-# Standard Usage
+# Standard
 
-Additional basic utilities
+Alias anything!
 
 ```
 alias nc='ncat'
@@ -59,3 +58,14 @@ phpserver(){
 	eval "php -S localhost:9000"
 }
 ```
+
+
+
+
+
+---
+
+TODO : change dcf
+
+
+TODO : port script
