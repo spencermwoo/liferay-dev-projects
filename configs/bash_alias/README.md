@@ -35,6 +35,8 @@ Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/maste
  * Additionally drop and recreate database with [`dcf`](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/configs/bash_alias/.bashrc#L159-L161) 
  Requires [helpers](https://github.com/SpencerWoo/liferay-dev-projects/blob/master/configs/bash_alias/.bashrc#L126-L148)
 
+[`cr`] : [Start tomcat on open port from MCD](https://github.com/holatuwol/liferay-faster-deploy/tree/master/tomcat#start-tomcat)
+
 # Standard
 
 Alias anything!
@@ -66,6 +68,3 @@ phpserver(){
 ---
 
 TODO : change dcf
-
-
-TODO : port script

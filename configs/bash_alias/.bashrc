@@ -18,6 +18,19 @@ sb(){
   source ~/.bash_profile
 }
 
+find_in_cwd_or_parent() {
+  local slashes=${PWD//[^\/]/};
+  local directory=$PWD;
+
+  for (( n=${#slashes}; n>0; --n )); do
+    test -e "$directory/$1" && echo "$directory/$1" && return 0
+
+    directory="$directory/.."
+  done
+
+  return 1
+}
+
 is_cwd_git() {
   if ( git rev-parse --git-dir > /dev/null 2>&1 ); then
     return 0
@@ -26,7 +39,33 @@ is_cwd_git() {
   return 1
 }
 
-is_cwd_liferayDXP() {
+is_cwd_git_liferay() {
+  if is_cwd_git; then
+    local gitFolderPath="$(git rev-parse --show-toplevel)"
+
+    if [ -d $gitFolderPath/portal-impl ]; then
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+is_cwd_git_liferay_app() {
+  if is_cwd_git; then
+    local gitFolderPath="$(git rev-parse --show-toplevel)"
+    local app_bnd_file_path="${gitFolderPath}/app.bnd"
+
+    if [ -f "${app_bnd_file_path}" ] && \
+        [ $(cat "${app_bnd_file_path}" | grep '^Liferay-Releng' | wc -l | xargs) -gt 0 ]; then      
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+is_cwd_git_liferayDXP() {
   if is_cwd_git; then
     local gitFolderPath="$(git rev-parse --show-toplevel)"
 
@@ -38,60 +77,68 @@ is_cwd_liferayDXP() {
   return 1
 }
 
-cds() {
-  if [ -n "$1" ]; then
-    local folderPath
+is_cwd_git_liferayDXP_private() {
+  if is_cwd_git; then
+    local gitFolderPath="$(git rev-parse --show-toplevel)"
 
-    if is_cwd_liferayDXP; then
+    if [ -d $gitFolderPath/modules ] && [ -d $gitFolderPath/working.dir.properties ]; then
+      return 0
+    fi
+  fi
+}
+
+cds() {
+  local partial_folder_path="$1"
+
+  if [ -n "${partial_folder_path}" ]; then
+    local folder_path
+
+    if is_cwd_git_liferayDXP || is_cwd_git_liferay_app; then
       pushd $(git rev-parse --show-toplevel) > /dev/null
 
-      #folderPath="$(git ls-files | grep -m 1 "$1/bnd.bnd" | head -1 | xargs -n1 dirname)"
-      #folderPath="$(git ls-files \
-            #| awk -v moduleRegex=".*$1[^/]*\/(app|bnd).bnd" -v simpleRegex=".*$1" \
-            #     '$0 ~ moduleRegex || $0 ~ simpleRegex {print; exit}' \
-            #| xargs -n1 dirname)"
+      local filtered_file_paths=$(git ls-files | grep "${partial_folder_path}")
 
       #Search more strictly - match search term exactly in module name
-      folderPath="$(git ls-files \
-        | awk -v moduleRegex="/$1/((app|bnd).bnd|build(.gradle|.xml))" \
-          '$0 ~ moduleRegex {print; exit}' \
-        | xargs -n1 dirname)
-"
+      folder_path="$(echo "${filtered_file_paths}" \
+        | awk -v moduleRegex="(/|^)${partial_folder_path}/((app|bnd).bnd|build(.gradle|.xml))" \
+          '$0 ~ moduleRegex && (moduleLength == "" || length < moduleLength) {moduleLength = length; module = $0} END{print module}' \
+        | xargs dirname 2>/dev/null)"
+
       #Search not as strictly - contains search term in module name
-      if [ -z "$folderPath" ]; then
-        folderPath="$(git ls-files \
-          | awk -v moduleRegex="$1/((app|bnd).bnd|build(.gradle|.xml))" \
-            '$0 ~ moduleRegex {print; exit}' \
-          | xargs -n1 dirname)"
+      if [ -z "${folder_path}" ]; then
+        folder_path="$(echo "${filtered_file_paths}" \
+          | awk -v moduleRegex="(/|^).*${partial_folder_path}.*/((app|bnd).bnd|build(.gradle|.xml))" \
+            '$0 ~ moduleRegex && (moduleLength == "" || length < moduleLength) {moduleLength = length; module = $0} END{print module}' \
+          | xargs dirname 2>/dev/null)"
       fi
 
-      if [ -n "$folderPath" ]; then
-        folderPath="$(git rev-parse --show-toplevel)/$folderPath"
+      if [ -n "${folder_path}" ]; then
+        folder_path="$(git rev-parse --show-toplevel)/${folder_path}"
       fi
 
       popd > /dev/null
     fi
 
-    if [ -z "$folderPath" ]; then
+    if [ -z "${folder_path}" ]; then
       if is_cwd_git; then
         pushd $(git rev-parse --show-toplevel) > /dev/null
 
-        folderPath="$(git ls-files | grep -m 1 "$1/" | xargs -n1 dirname)"
+        folder_path="$(git ls-files | grep -m 1 "${partial_folder_path}/" | xargs -n1 dirname)"
 
-        if [ -n "$folderPath" ]; then
-          folderPath="$(git rev-parse --show-toplevel)/$folderPath"
+        if [ -n "${folder_path}" ]; then
+          folder_path="$(git rev-parse --show-toplevel)/${folder_path}"
         fi
 
         popd > /dev/null
       fi
 
-      if [ -z "$folderPath" ]; then
-        folderPath="$(find . -type d -name "*$1*" -print0 -quit)"
+      if [ -z "${folder_path}" ]; then
+        folder_path="$(find . -type d -name "*${partial_folder_path}*" -print0 -quit)"
       fi
     fi
 
-    if [ -n "$folderPath" ]; then
-      cd -- $folderPath
+    if [ -n "${folder_path}" ]; then
+      cd -- ${folder_path}
     fi
   fi
 }
@@ -101,9 +148,9 @@ _cds()
   if [ "${#COMP_WORDS[@]}" != "2" ] || (! is_cwd_git); then
     return
   fi
-  
+
   # keep the suggestions in a local variable
-  local suggestions=($(compgen -W "$(pushd $(git rev-parse --show-toplevel) > /dev/null; git ls-files | awk -F"/" -v moduleRegex="/.lfrbuild-portal$" '$0 ~ moduleRegex {print $(NF-1)}')" -- "${COMP_WORDS[1]}"))
+  local suggestions=($(compgen -W "$(pushd $(git rev-parse --show-toplevel) > /dev/null; git ls-files | grep "/.lfrbuild-portal$" | awk -F"/" '{print $(NF-1)}')" -- "${COMP_WORDS[1]}"))
 
   if [ "${#suggestions[@]}" == "1" ]; then
     # if there's only one match, we remove the command literal
@@ -120,7 +167,7 @@ _cds()
 complete -F _cds cds
 
 pr(){
-  eval "git fetch origin pull/$@/head:pr-$@"
+  git fetch origin pull/$@/head:pr-$1
 }
 
 dbCreate() {
@@ -151,8 +198,8 @@ dc(){
   if [ -z "$1" ]; then
     echo "USAGE: dc tomcat-9.0.10"
   else
-    echo "RUNNING: 'rm -rf work; rm -rf osgi/state; rm -rf $@/temp; rm -rf $@/work'"
-    eval "rm -rf work; rm -rf osgi/state; rm -rf $@/temp; rm -rf $@/work"
+    echo "RUNNING: 'rm -rf work; rm -rf osgi/state; rm -rf $1/temp; rm -rf $1/work'"
+    rm -rf work; rm -rf osgi/state; rm -rf $1/temp; rm -rf $1/work
   fi
 }
 
