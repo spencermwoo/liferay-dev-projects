@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-# from __future__ import print_function
+
+# This is a work in progress.  I'll polish near the end.
+
+# Make functional -- todo
+# Make clean
+# Make efficient
+# Additional function
 
 import os
 import re
@@ -12,15 +18,13 @@ import math
 from time import strftime
 from contextlib import contextmanager
 
-# Configuration	
+# Configuration 
 
 # Filenames will have timestamp appended.
 timestamp = False
 
 # Debug prints are disabled.
-quiet = True
-
-
+quiet = False
 
 
 FILE_EXT = ".txt"
@@ -28,35 +32,32 @@ FILE_EXT = ".txt"
 # fancy later
 TMP_FILENAME = "tmp_bisect" + FILE_EXT
 BISECT_FILENAME = "bisect" + FILE_EXT
+LOG_FILENAME = "bisect_log" + FILE_EXT
 
 
-LPS_LIST = {}
+LPS_DICT = {}
 
 dir_path = os.getcwd()
 
 
 def print_flush(*objects, sep='', end='\n', flush=False):
-	""" Override print() function """
-	return builtins.print(objects, sep, end, flush=True)
+    """ Override print() function """
+    return builtins.print(objects, sep, end, flush=True)
 
 builtins.__print__ = print_flush
 
+# Help
 def print_help():
-	print("USAGE : lb <bad_commit> <good_commit>")
-
-def print_exit(msg):
-	print(msg)
-	exit()
-
+    print("USAGE : lb <bad_commit> <good_commit>")
+    print("\nhttps://git-scm.com/docs/git-bisect")
 
 # Processes
-
 def git_checkout(commit):
-	print("Checking out " + commit)
-	args = [commit]
+    print("Checking out " + commit)
+    args = [commit]
 
-	return run_process(True, "git", "checkout", args)
-	
+    return run_process(True, "git", "checkout", args)
+    
 def git_log(commit):
     args = ["-1", commit]
 
@@ -64,15 +65,15 @@ def git_log(commit):
 
 # git log --pretty=oneline fix-pack-de-28-7010..fix-pack-de-27-7010 > tmp_bisect.txt
 def git_log_pretty(bad, good):
-	args = ["--pretty=oneline", bad + "..." + good]
+    args = ["--pretty=oneline", bad + "..." + good]
 
-	output = run_process(True, "git", "log", args)
-	file_write(TMP_FILENAME, output)
+    output = run_process(True, "git", "log", args)
+    file_write(TMP_FILENAME, output)
 
 def run_process(output, program, cmd, *params):
     if not quiet:
         print("\t" + program + " " + cmd + " " +
-              ' '.join(str(x) for x in params[0]))
+              ' '.join(str(p) for p in params[0]))
 
     args = [program] + [cmd] + params[0]
     process = subprocess.Popen(args, stdout=subprocess.PIPE, cwd=dir_path)
@@ -82,190 +83,190 @@ def run_process(output, program, cmd, *params):
 
 # Utility
 
-def file_write(filename, content):
-	with open(os.path.join(dir_path, filename),"w", encoding="UTF-8") as file:
-		file.write(content)
+# Write or Append
+def file_write(filename, content, write=True):
+    with open(os.path.join(dir_path, filename),"w" if write else "a", encoding="UTF-8") as file:
+        file.write(content)
 
 def time():
-	time.sleep(5)
+    time.sleep(5)
 
+# Fix decorator
 def outer():
-	def reader(func):
-		def wrapper():
-			LPS_LIST = list_read()
+    def reader(func):
+        def wrapper():
+            LPS_DICT = list_read()
 
-			if len(LPS_LIST) < 2:
-				print_exit("Found Ticket : " + LPS_LIST[0])
+            if len(LPS_DICT) < 2:
+                l = LPS_DICT.popitem()
+                sys.exit("Found Ticket : " + l[0] + " at " + l[1])
 
-			length = len(LPS_LIST) - 1
-			num = int(length / 2)
-			
-			try:
-				with open(BISECT_FILENAME, encoding="UTF-8") as f:
-					output = func(f, num, length)
-			except FileNotFoundError:
-				print_exit("You need to start bisect.")
-				
-			except:
-				print_exit("[!] XD")
+            length = len(LPS_DICT) - 1
+            num = int(length / 2)
+            
+            try:
+                with open(BISECT_FILENAME, encoding="UTF-8") as f:
+                    output = func(f, num, length)
+            except FileNotFoundError:
+                sys.exit("You need to start bisect.")
+                
+            except:
+                sys.exit("[!] XD")
 
-			return output
+            return output
 
-		return wrapper
-	return reader
+        return wrapper
+    return reader
 
 # Functional
-
-# decorate better? -- @outer(False, False) -- file_write and bisect?
 @outer()
 def bisect(f, num, length):
-	""" Liferay Bisect """
-	commit = f.readlines()[num]
-	steps = (int) (math.sqrt(length)) + 1
+    """ Liferay Bisect """
+    commit = f.readlines()[num]
+    steps = (int) (math.sqrt(length)) + 1
 
-	# if steps:
+    # if steps:
 
-	print("\nSteps remaining : " + str(steps))
-	# print("\n" + str(num) + " : " + str(commit))
-	return commit.split()[0]
+    print("\nSteps remaining : " + str(steps))
+    # print("\n" + str(num) + " : " + str(commit))
+    return commit.split()[0]
 
 @outer()
 def bisect_bad(f, num, length):
-	""" Liferay Bisect """
-	output = f.readlines()[:num+1]
+    """ Liferay Bisect """
+    output = f.readlines()[:num+1]
 
-	output = ''.join(output)
+    output = ''.join(output)
 
-	file_write(BISECT_FILENAME, output)
+    file_write(BISECT_FILENAME, output)
 
-	return bisect()
+    return bisect()
 
 @outer()
 def bisect_good(f, num, length):
-	""" Liferay Bisect """
-	output = f.readlines()[num:]
+    """ Liferay Bisect """
+    output = f.readlines()[num:]
 
-	output = ''.join(output)
+    output = ''.join(output)
 
-	file_write(BISECT_FILENAME, output)
+    file_write(BISECT_FILENAME, output)
 
-	return bisect()
+    return bisect()
 
 def list_generate():
-	""" Creates BISECT_FILENAME from TMP_FILENAME """
-	with open(TMP_FILENAME, encoding="UTF-8") as f:
-		for line in f:
-			split_line = line.split()
+    """ Transform TMP_FILENAME into BISECT_FILENAME """
+    with open(TMP_FILENAME, encoding="UTF-8") as f:
+        for line in f:
+            split_line = line.split()
 
-			commit_hash = split_line[0]
-			LPS = split_line[1]
+            commit_hash = split_line[0]
+            LPS = split_line[1]
 
-			if LPS != LPS.upper():
-				continue
+            if LPS != LPS.upper():
+                continue
+            elif LPS in LPS_DICT:
+                continue
+            else:
+                LPS_DICT[LPS] = commit_hash
 
-			if LPS in LPS_LIST:
-				continue
-			else:
-				LPS_LIST[LPS] = commit_hash
+    output = ""
+    for lp in LPS_DICT:
+        output += LPS_DICT[lp] + " : " + lp + "\n"
 
-	output = ""
-	for lp in LPS_LIST:
-		output += LPS_LIST[lp] + " : " + lp + "\n"
-
-	with open(os.path.join(dir_path, BISECT_FILENAME),"w", encoding="UTF-8") as file:
-			file.write(output)
+    file_write(BISECT_FILENAME, output)
+    file_write(LOG_FILENAME, output)
 
 def list_read():
-	""" Creates LPS_LIST from BISECT_FILENAME """
-	LPS_LIST = {}
-	try:
-		with open(BISECT_FILENAME, encoding="UTF-8") as f:
-			for line in f:
-				split_line = line.split()
-				
-				commit_hash = split_line[0]
-				LPS = split_line[2]
+    """ Populate LPS_DICT from BISECT_FILENAME """
+    LPS_DICT = {}
+    try:
+        with open(BISECT_FILENAME, encoding="UTF-8") as f:
+            for line in f:
+                split_line = line.split()
+                
+                commit_hash = split_line[0]
+                LPS = split_line[2]
 
-				if LPS in LPS_LIST:
-					# print(LPS_LIST)
-					continue
-				else:
-					LPS_LIST[LPS] = commit_hash
+                if LPS in LPS_DICT:
+                    # print(LPS_DICT)
+                    continue
+                else:
+                    LPS_DICT[LPS] = commit_hash
 
-	except FileNotFoundError:
-		print_exit("You need to start bisect.")
-		
-	except:
-		print_exit("[!] XD")
+    except FileNotFoundError:
+        sys.exit("You need to start bisect.")
+        
+    except:
+        sys.exit("[!] XD")
 
-	return LPS_LIST
+    return LPS_DICT
 
-def history_write():
-	print("init history")
+def list_log(commit_hash, cmd=""):
+    """ Appends to LOG_FILENAME """
+    if cmd:
+        cmd = " - " + cmd
 
-def history_append():
-	print("append")
-
-def history_read():
-	print("read)")
+    content = cmd + "\n\n" + commit_hash
+    file_write(LOG_FILENAME, content, False)
 
 # @contextmanager
 # def checkout(commit):
 
-	# commit
+    # commit
 
 def main():
-	#0-, 4+
-	if len(sys.argv) < 2 or len(sys.argv) > 3:
-		print("'-help' for guide.")
-	else:
-		v1 = sys.argv[1]
-		
-		if "-help" in sys.argv or "--help" in sys.argv:
-			print_help()
+    #lb bad good -- implicit bisect start
 
-		# fix
-		elif (v1 == "bad" or v1 == "b"):
-			commit = bisect_bad()
-			commit_hash = commit.split()[0]
-			git_checkout(commit_hash)
+    #Expecting : bisect.py command
+    num_args = len(sys.argv)
 
-		elif (v1 == "good" or v1 == "g"):
-			commit = bisect_good()
-			commit_hash = commit.split()[0]
-			git_checkout(commit_hash)
+    if "-help" in sys.argv or "-h" in sys.argv:
+        print_help()
 
-		elif (v1 == "reset" or v1 == "r"):
-			list_generate()
+    elif num_args == 2:
+        cmd = sys.argv[1]
 
-			commit = bisect()
-			commit_hash = commit.split()[0]
-			git_checkout(commit_hash)
-		elif (v1 == "log" or v1 == "l"):
-			print("bisect log")
+        commands = ["bad", "good", "reset", "log"]
 
-		else:
-			# print("try")
-			try:
-				bad = sys.argv[1]
-				good = sys.argv[2]
-			except:
-				print_exit("Improper argument.  '-help' for guide.")
+        if cmd in commands:
+            commit = None
 
-			git_log_pretty(bad, good)
+            if cmd == commands[0]:
+                commit = bisect_bad()
+            elif cmd == commands[1]:
+                commit = bisect_good()
+            elif cmd == commands[2]:
+                commit = bisect()
+            else:
+                sys.exit(LOG_FILENAME)
 
-			list_generate()
+            commit_hash = commit.split()[0]
+            git_checkout(commit_hash)
 
-			# bisect()
-			git_checkout(bisect())
-			# commit_hash = commit.split()[0]
-			# git_checkout(commit)\
+            list_log(commit_hash, cmd)
 
-		# else:
-		# 	print_help()
+    elif num_args == 3:
+        bad = sys.argv[1]
+        good = sys.argv[2]
 
-		# yield
+        git_log_pretty(bad, good)
 
+        list_generate()
+
+        commit_hash = bisect()
+        git_checkout(commit_hash)
+
+        list_log(commit_hash)
+
+        # commit_hash = commit.split()[0]
+        # git_checkout(commit)\
+
+        # else:
+        #   print_help()
+
+        # yield
+    else:
+        sys.exit("Improper argument.  '-help' for guide.")
 
 # git_checkout("6f0df7c1b8f733294df4c878393664156b884716")
 if __name__ == "__main__":
