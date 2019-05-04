@@ -111,7 +111,10 @@ def outer():
                 sys.exit("You need to start bisect.")
                 
             except:
-                sys.exit("[!] XD")
+                if length == 1:
+                    bisect()
+                else:
+                    sys.exit("[!] XD")
 
             return output
 
@@ -123,12 +126,9 @@ def outer():
 def bisect(f, num, length):
     """ Liferay Bisect """
     commit = f.readlines()[num]
-    steps = (int) (math.sqrt(length)) + 1
-
-    # if steps:
+    steps = (int) (math.log(length, 2)) + 1
 
     print("\nSteps remaining : " + str(steps))
-    # print("\n" + str(num) + " : " + str(commit))
     return commit.split()[0]
 
 @outer()
@@ -145,7 +145,7 @@ def bisect_bad(f, num, length):
 @outer()
 def bisect_good(f, num, length):
     """ Liferay Bisect """
-    output = f.readlines()[num:]
+    output = f.readlines()[num-1:]
 
     output = ''.join(output)
 
@@ -188,7 +188,6 @@ def list_read():
                 LPS = split_line[2]
 
                 if LPS in LPS_DICT:
-                    # print(LPS_DICT)
                     continue
                 else:
                     LPS_DICT[LPS] = commit_hash
@@ -197,7 +196,7 @@ def list_read():
         sys.exit("You need to start bisect.")
         
     except:
-        sys.exit("[!] XD")
+        sys.exit("[!] XD2")
 
     return LPS_DICT
 
@@ -208,11 +207,6 @@ def list_log(commit_hash, cmd=""):
 
     content = cmd + "\n\n" + commit_hash
     file_write(LOG_FILENAME, content, False)
-
-# @contextmanager
-# def checkout(commit):
-
-    # commit
 
 def main():
     #lb bad good -- implicit bisect start
