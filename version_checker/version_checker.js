@@ -81,6 +81,16 @@ function extractSenna(json){
 	return stripVersion(json['dependencies']['senna']);	
 }
 
+function extractJSON(json, match){
+	return stripVersion(json['dependencies'][match]);
+}
+
+function extractString(str, regex){
+	str = str.match(regex)[0];
+
+	return stripVersion(str);
+}
+
 //UNIQUES
 //THIS IS AN EXAMPLE^.  BETTER DESIGN LATER
 function extractLexicon(str){
@@ -98,7 +108,7 @@ function stripVersion(str){
 
 // Fetch
 // Can use string builder...
-function fetchLibrary(arr, func, str){
+function fetchLibrary(arr, str){
 	ret_str = str || "";
 
 	for(var i = 0 ; i < arr.length; i++){
@@ -107,20 +117,26 @@ function fetchLibrary(arr, func, str){
 		try{
 			json = getJSON(arr[i]);
 
-			ret_str += " : " + func(json);
+			// ret_str += " : " + func(json);
+			ret_str += " : " + extractJSON(json, str);
 		} catch (err) {
 			//try not json
 			try{
-				if(str === "Clay"){
-					str = getString(arr[i]);
+				tmp_str = getString(arr[i]);
 
-					ret_str += " : " + extractLexicon(str);
+				if(str === "clay"){
+					regex = new RegExp("(lexiconVersion = ).+");
+				} else if(str === "jquery"){
+					regex = new RegExp("(jQueryVersion = ).+");
+					// regex = new RegExp("(" + str + "Version = ).+");
 				} else {
-					console.log(str);
 					throw err;
 				}
+
+				ret_str += " : " + extractString(tmp_str, regex);
 			} catch (err) {
-				console.log("Failure at " + arr[i]);
+				// console.log("Failure at " + arr[i]);
+				ret_str += " : Unknown";
 			}
 		}
 	}
@@ -129,27 +145,27 @@ function fetchLibrary(arr, func, str){
 }
 
 function fetchAlloyEditor(){
-	return fetchLibrary(alloyeditor, extractAlloyEditor, "AlloyEditor");
+	return fetchLibrary(alloyeditor, "alloyeditor");
 }
 
 function fetchClay(){
-	return fetchLibrary(clay, extractClay, "Clay");
+	return fetchLibrary(clay, "clay");
 }
 function fetchJQuery(){
 	//jq same endpoint as clay
-	return fetchLibrary(jquery, extractJQuery, "jQuery");
+	return fetchLibrary(clay, "jquery");
 }
 
 function fetchSenna(){
-	return fetchLibrary(senna, extractSenna, "Senna");
+	return fetchLibrary(senna, "senna");
 }
 
 function fetch(){
 	// var value = "asdfsa";
 
-	// console.log(fetchAlloyEditor());
-	// console.log(fetchClay());
-	// console.log(fetchSenna());
+	console.log(fetchAlloyEditor());
+	console.log(fetchClay());
+	console.log(fetchSenna());
 	console.log(fetchJQuery());
 
 	// console.log(output);
