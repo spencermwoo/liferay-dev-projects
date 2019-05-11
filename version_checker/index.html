@@ -16,7 +16,37 @@
 	<!-- Moment.js -->
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script> -->
 
-	<link rel="stylesheet" href="style.css" />
+	<!-- <link rel="stylesheet" href="style.css" /> -->
+	<!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
+	<style>
+
+		table {
+		  border-collapse: collapse;
+		  width: 100%;
+		  /*border: 1px solid black;*/
+		}
+		th{
+			text-align:center;
+			padding:2px;
+
+  		  vertical-align: bottom;
+  		  border: 1px solid black;
+		}
+
+		td {
+		  padding: 8px;
+  		  vertical-align: bottom;
+  		  border: 1px solid black;
+  		  text-align:center;
+		}
+
+		td + td
+		{
+		    text-align:center;
+		}
+
+		tr:nth-child(even) {background-color: #f2f2f2;}
+	</style>
 	<script type="text/javascript" src="version_checker.js"></script>
 
 	<script>
@@ -62,15 +92,43 @@ function rebuildTable(json){
 	table.appendChild(tableBody);
 	table = tableBody;
 
+	// console.log("X");
+
+	var setCols = function(colData){
+
+		var row = document.createElement('tr');
+
+		var cell = document.createElement('td');
+		row.appendChild(cell);
+
+		for(data in colData){
+			var cell = document.createElement('th');
+			cell.innerHTML = data;
+
+			row.appendChild(cell);			
+		}
+
+		table.appendChild(row);
+	}
+
 	var addRow = function(header, rowData){
 		
 		var row = document.createElement('tr');
 
-		for ( var i = -1 ; i < rowData.length ; i++){
-			var isHeader = i == -1;
-			var cell = document.createElement(isHeader ? 'th' : 'td');
-			cell.innerHTML = isHeader ? header : rowData[i];
-		
+		// console.log(rowData);
+
+		//header
+		if(header){
+			var cell = document.createElement('th');
+			cell.innerHTML = header;
+			row.appendChild(cell);
+
+		}
+
+		for(data in rowData){
+			var cell = document.createElement('td');
+			cell.innerHTML = rowData[data];
+
 			row.appendChild(cell);
 		}
 
@@ -90,6 +148,18 @@ function rebuildTable(json){
 
 		// return [locationMetadata['timestamp'], locationLink];
 	};
+
+	// console.log(json);
+	var first = true;
+	for (x in json) {
+		// (first ? setCols(json[x]) : () => first = false);
+		if (first){
+			setCols(json[x]);
+			first = false;
+		}
+		addRow(x, json[x])
+		// console.log(json[x]);
+	}
 }
 
 // function rebuildTable(e) {
@@ -163,7 +233,7 @@ function rebuildTable(json){
 
 request.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
-		rebuildTable(this.responseText);
+		rebuildTable(JSON.parse(this.responseText));
 		// var lines = this.responseText.split('\n');
 
 		// for (var i = 0; i < lines.length; i++) {
@@ -192,6 +262,9 @@ request.onreadystatechange = function() {
 		// });
 
 		// rebuildTable();
+		// console.log("444");
+	}else{
+		// console.log("X33");
 	}
 };
 
