@@ -136,10 +136,18 @@ function fetch_senna(){
 }
 
 function fetch(){
-	console.log(fetch_alloyeditor());
-	console.log(fetch_clay());
-	console.log(fetch_jquery());
-	console.log(fetch_senna());
+	// console.log(fetch_alloyeditor());
+	// console.log(fetch_clay());
+	// console.log(fetch_jquery());
+	// console.log(fetch_senna());
+
+	var god_obj = new Object();
+
+	for(var i = 0 ; i < libraries.length ; i++){
+		god_obj[libraries[i]] = runFunction(window, 'fetch_' + libraries[i]);
+	}
+	
+	return god_obj;
 }
 
 // function generate_obj(){
@@ -149,6 +157,13 @@ function fetch(){
 // 	var obj = new Object();
 
 // 	obj.
+// }
+
+// var fs = require('fs');
+// function write_file(file, string){
+// 	fs.writeFile(file, string, function (err) {
+// 		if (err) throw err;
+// 	});
 // }
 
 function runFunction(obj, name, arguments)
@@ -161,13 +176,13 @@ function runFunction(obj, name, arguments)
 }
 
 function generate_json(){
-	var god_obj = new Object();
+	var obj = fetch();
+	var json = JSON.stringify(obj);
 
-	for(var i = 0 ; i < libraries.length ; i++){
-		god_obj[libraries[i]] = runFunction(window, 'fetch_' + libraries[i]);
-	}
-	console.log(god_obj);
+	console.log(json)
+
+	// var file_path = config.searchInputFile;
+	// write_file('timestamp.json', json);
+
+	document.getElementById('rebuild2').disabled = true;
 }
-
-// 	JSON.stringify(obj);
-// }

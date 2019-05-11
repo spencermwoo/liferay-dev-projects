@@ -19,10 +19,19 @@
 	<link rel="stylesheet" href="style.css" />
 	<script type="text/javascript" src="version_checker.js"></script>
 
+	<script>
+		//every 5 minutes
+		setInterval(function() {
+			document.getElementById('rebuild2').disabled = false;
+		}, 300000);
+	</script>
 </head>
 <body>
 <input id="rebuild" type="button" value="rebuild" onclick="generate_json();" />
-<div class="container" role="main">
+
+<input id="rebuild2" type="button" value="rebuild2"  />
+
+<div class="container" id="container" role="main">
 <!-- 
 <ul class="nav nav-pills">
   <li role="presentation" class="active"><a href="#">All</a></li>
@@ -34,133 +43,165 @@
 <!-- <div id="summary">&nbsp;</div> -->
 </div>
 </body>
-<!-- 
+
 <script>
 var request = new XMLHttpRequest();
-var requestURL = 'search.json?_=' + new Date().getTime();
+// var requestURL = 'json.json?_=' + new Date().getTime();
+var requestURL = 'json.json';
 
 var locations = [];
 var timestampIndex = 0;
 
-function rebuildTable(e) {
-	if (e) {
-		var target = e.target;
-
-		jQuery('.nav li').removeClass('active');
-		jQuery(target).parent().addClass('active');
-	}
-
-	var selectedTab = jQuery('.nav li.active').text();
-
-	var summary = document.getElementById('summary');
-	summary.innerHTML = '';
+function rebuildTable(json){
+	var container = document.getElementById('container');
 
 	var table = document.createElement('table');
 	table.className = 'table';
-	summary.appendChild(table);
+	container.appendChild(table);
 	var tableBody = document.createElement('tbody');
 	table.appendChild(tableBody);
 	table = tableBody;
 
-	var lastRowDateString = null;
-
-	var addRow = function(isHeader, rowData, index) {
-		if (!isHeader) {
-			var rowDateString = moment(rowData[timestampIndex]).format('dddd, MMMM D, YYYY');
-
-			if (lastRowDateString != rowDateString) {
-				var divider = document.createElement('tr');
-
-				var cell = document.createElement('th');
-				cell.colSpan = rowData.length;
-				cell.innerHTML = rowDateString;
-
-				divider.appendChild(cell);
-				table.appendChild(divider);
-
-				lastRowDateString = rowDateString;
-			}
-		}
-
+	var addRow = function(header, rowData){
+		
 		var row = document.createElement('tr');
 
-		for (var i = 0; i < rowData.length; i++) {
+		for ( var i = -1 ; i < rowData.length ; i++){
+			var isHeader = i == -1;
 			var cell = document.createElement(isHeader ? 'th' : 'td');
-			cell.innerHTML = (!isHeader && (i == timestampIndex)) ? moment(rowData[i]).format('HH:mm') : rowData[i];
+			cell.innerHTML = isHeader ? header : rowData[i];
+		
 			row.appendChild(cell);
 		}
 
 		table.appendChild(row);
-	};
-
-	var getRowData = function(locationMetadata) {
-		var location = locationMetadata['location'];
-		var title = locationMetadata['title'];
-
-		var locationLink = '<div class="link-location"><a href="' + location + '">' + location + '</a></div>';
-
-		if (location != title) {
-			locationLink += '<div class="link-title">' + title + '</div>'
-		}
-
-		return [locationMetadata['timestamp'], locationLink];
-	};
-
-	var isSelected = function(x) {
-		var location = x['location'];
-		var isGrow = location.indexOf('http://grow.liferay.com/') == 0 || location.indexOf('https://grow.liferay.com/') == 0;
-		var isLoop = location.indexOf('http://loop.liferay.com/') == 0 || location.indexOf('https://loop.liferay.com/') == 0;
-		var isOther = !isGrow && !isLoop;
-
-		if (selectedTab == 'Grow') {
-			return isGrow;
-		}
-		if (selectedTab == 'Loop') {
-			return isLoop;
-		}
-		if (selectedTab == 'Other') {
-			return isOther;
-		}
-		return true;
 	}
 
-	locations.filter(isSelected).map(getRowData).forEach(addRow.bind(null, false));
-};
+	var getRowData = function(locationMetadata) {
+		return [1, 2];
+		// var location = locationMetadata['location'];
+		// var title = locationMetadata['title'];
+
+		// var locationLink = '<div class="link-location"><a href="' + location + '">' + location + '</a></div>';
+
+		// if (location != title) {
+		// 	locationLink += '<div class="link-title">' + title + '</div>'
+		// }
+
+		// return [locationMetadata['timestamp'], locationLink];
+	};
+}
+
+// function rebuildTable(e) {
+// 	if (e) {
+// 		var target = e.target;
+
+// 		jQuery('.nav li').removeClass('active');
+// 		jQuery(target).parent().addClass('active');
+// 	}
+
+// 	var selectedTab = jQuery('.nav li.active').text();
+
+// 	var summary = document.getElementById('summary');
+// 	summary.innerHTML = '';
+
+// 	var table = document.createElement('table');
+// 	table.className = 'table';
+// 	summary.appendChild(table);
+// 	var tableBody = document.createElement('tbody');
+// 	table.appendChild(tableBody);
+// 	table = tableBody;
+
+// 	var lastRowDateString = null;
+
+// 	var addRow = function(isHeader, rowData, index) {
+// 		if (!isHeader) {
+// 			var rowDateString = moment(rowData[timestampIndex]).format('dddd, MMMM D, YYYY');
+
+// 			if (lastRowDateString != rowDateString) {
+// 				var divider = document.createElement('tr');
+
+// 				var cell = document.createElement('th');
+// 				cell.colSpan = rowData.length;
+// 				cell.innerHTML = rowDateString;
+
+// 				divider.appendChild(cell);
+// 				table.appendChild(divider);
+
+// 				lastRowDateString = rowDateString;
+// 			}
+// 		}
+
+// 		var row = document.createElement('tr');
+
+// 		for (var i = 0; i < rowData.length; i++) {
+// 			var cell = document.createElement(isHeader ? 'th' : 'td');
+// 			cell.innerHTML = (!isHeader && (i == timestampIndex)) ? moment(rowData[i]).format('HH:mm') : rowData[i];
+// 			row.appendChild(cell);
+// 		}
+
+// 		table.appendChild(row);
+// 	};
+
+// 	var getRowData = function(library) {
+// 		// var master = library['location'];
+// 		// var title = locationMetadata['title'];
+
+// 		// var locationLink = '<div class="link-location"><a href="' + location + '">' + location + '</a></div>';
+
+// 		// if (location != title) {
+// 		// 	locationLink += '<div class="link-title">' + title + '</div>'
+// 		// }
+
+// 		// return [locationMetadata['timestamp'], locationLink];
+// 		return ['1', '2'];
+// 	};
+
+
+// 	locations.filter(isSelected).map(getRowData).forEach(addRow.bind(null, false));
+// };
 
 request.onreadystatechange = function() {
 	if (this.readyState == 4 && this.status == 200) {
-		var lines = this.responseText.split('\n');
+		rebuildTable(this.responseText);
+		// var lines = this.responseText.split('\n');
 
-		for (var i = 0; i < lines.length; i++) {
-			var line = lines[i].trim();
+		// for (var i = 0; i < lines.length; i++) {
+		// 	var line = lines[i].trim();
 
-			if (!line) {
-				continue;
-			}
+		// 	if (!line) {
+		// 		continue;
+		// 	}
+		// 	console.log(line);
+		// 	var locationMetadata = JSON.parse(line);
 
-			var locationMetadata = JSON.parse(line);
+		// 	// var milliseconds = parseFloat(locationMetadata['timestamp']) * 1000;
+		// 	// locationMetadata['timestamp'] = new Date(milliseconds);
+		// 	locations.push(locationMetadata);
+		// }
+		// var lines = this.responseText;
+		// console.log(lines);
+		// var locationMetadata = JSON.parse(lines);
 
-			var milliseconds = parseFloat(locationMetadata['timestamp']) * 1000;
-			locationMetadata['timestamp'] = new Date(milliseconds);
-			locations.push(locationMetadata);
-		}
+		// // locations.reverse();
 
-		locations.reverse();
+		// print(locationMetadata);
 
-		locations.sort(function(a, b) {
-			return b.timestamp.getTime() - a.timestamp.getTime();
-		});
+		// locations.sort(function(a, b) {
+		// 	return b.timestamp.getTime() - a.timestamp.getTime();
+		// });
 
-		rebuildTable();
+		// rebuildTable();
 	}
 };
 
 request.open('GET', requestURL, true);
 request.send();
 
-jQuery('.nav li').on('click', rebuildTable);
+// rebuildTable();
+// jQuery('.nav li').on('click', rebuildTable);
 
-</script> -->
+</script>
 
 
 </html>
