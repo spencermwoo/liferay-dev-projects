@@ -52,77 +52,48 @@ function get(url){
     return Httpreq.responseText;          
 }
 
-function getJSON(url){
+function get_json(url){
 	var json = JSON.parse(get(url));
 
 	return json;
 }
 
-function getString(url){
-	rr = get(url);
-	// console.log(rr);
-	return String(rr);
+function get_string(url){
+	return String(get(url));
 }
 
 
-
-//THESE CAN BE DIFFERENT ACROSS VERSIONS.  Hack first -- fix with a map pair?
-function extractAlloyEditor(json){
-	return stripVersion(json['dependencies']['alloyeditor']);
-}
-function extractClay(json){
-	return stripVersion(json['dependencies']['clay']);
-}
-function extractJQuery(json){
-	return stripVersion(json['dependencies']['jquery']);
-}
-
-function extractSenna(json){
-	return stripVersion(json['dependencies']['senna']);	
-}
-
-function extractJSON(json, match){
-	return stripVersion(json['dependencies'][match]);
-}
-
-function extractString(str, regex){
-	str = str.match(regex)[0];
-
-	return stripVersion(str);
-}
-
-//UNIQUES
-//THIS IS AN EXAMPLE^.  BETTER DESIGN LATER
-function extractLexicon(str){
-	str = str.match(/(lexiconVersion = ).+/g)[0];
-
-	return stripVersion(str)
-}
-
-// Util
-function stripVersion(str){
-	// return str;
+function extract_version(str){
 	return str.match(/[\d.]+/g)[0];
 }
 
+function extract_json(json, match){
+	return extract_version(json['dependencies'][match]);
+}
+
+function extract_string(str, regex){
+	str = str.match(regex)[0];
+
+	return extract_version(str);
+}
 
 // Fetch
 // Can use string builder...
-function fetchLibrary(arr, str){
+function fetch_library(arr, str){
 	ret_str = str || "";
 
 	for(var i = 0 ; i < arr.length; i++){
 		ret_str += "\n" + versions[i];
 
 		try{
-			json = getJSON(arr[i]);
+			json = get_json(arr[i]);
 
 			// ret_str += " : " + func(json);
-			ret_str += " : " + extractJSON(json, str);
+			ret_str += " : " + extract_json(json, str);
 		} catch (err) {
 			//try not json
 			try{
-				tmp_str = getString(arr[i]);
+				tmp_str = get_string(arr[i]);
 
 				if(str === "clay"){
 					regex = new RegExp("(lexiconVersion = ).+");
@@ -133,7 +104,7 @@ function fetchLibrary(arr, str){
 					throw err;
 				}
 
-				ret_str += " : " + extractString(tmp_str, regex);
+				ret_str += " : " + extract_string(tmp_str, regex);
 			} catch (err) {
 				// console.log("Failure at " + arr[i]);
 				ret_str += " : Unknown";
@@ -144,32 +115,24 @@ function fetchLibrary(arr, str){
 	return ret_str;
 }
 
-function fetchAlloyEditor(){
-	return fetchLibrary(alloyeditor, "alloyeditor");
+function fetch_alloyeditor(){
+	return fetch_library(alloyeditor, "alloyeditor");
 }
 
-function fetchClay(){
-	return fetchLibrary(clay, "clay");
+function fetch_clay(){
+	return fetch_library(clay, "clay");
 }
-function fetchJQuery(){
-	//jq same endpoint as clay
-	return fetchLibrary(clay, "jquery");
+function fetch_jquery(){
+	return fetch_library(clay, "jquery"); // clay endpoint
 }
 
-function fetchSenna(){
-	return fetchLibrary(senna, "senna");
+function fetch_senna(){
+	return fetch_library(senna, "senna");
 }
 
 function fetch(){
-	// var value = "asdfsa";
-
-	console.log(fetchAlloyEditor());
-	console.log(fetchClay());
-	console.log(fetchSenna());
-	console.log(fetchJQuery());
-
-	// console.log(output);
-
-	// getJSON(alloyeditor[0]);
-	// console.log(value);
+	console.log(fetch_alloyeditor());
+	console.log(fetch_clay());
+	console.log(fetch_jquery());
+	console.log(fetch_senna());
 }
