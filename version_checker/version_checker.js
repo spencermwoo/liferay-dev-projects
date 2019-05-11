@@ -82,14 +82,14 @@ function extract_string(str, regex){
 // Can use string builder...
 function fetch_library(arr, str){
 	// ret_str = str || "";
-	var verions_obj = new Object();
+	var obj = new Object();
 
 	for(var i = 0 ; i < arr.length; i++){
 		// ret_str += "\n" + majors[i];
 		try{
 			var json = get_json(arr[i]);
 
-			verions_obj[majors[i]] = extract_json(json, str);
+			obj[majors[i]] = extract_json(json, str);
 		} catch (err) {
 			
 			// else not JSON
@@ -105,18 +105,19 @@ function fetch_library(arr, str){
 					throw err;
 				}
 
-				verions_obj[majors[i]] = extract_string(tmp_str, regex);
+				obj[majors[i]] = extract_string(tmp_str, regex);
 			} catch (err) {
 				// console.log("Failure at " + arr[i]);
-				verions_obj[majors[i]] = "Unknown";
+				obj[majors[i]] = "Unknown";
 			}
 		}
 	}
 
-	var library_obj = new Object();
-	library_obj[str] = verions_obj;
+	return obj;
+	// var library_obj = new Object();
+	// library_obj[str] = verions_obj;
 	
-	return library_obj;
+	// return library_obj;
 }
 
 function fetch_alloyeditor(){
@@ -150,18 +151,23 @@ function fetch(){
 // 	obj.
 // }
 
-// function generate_json(){
-// 	var obj = new Object();
+function runFunction(obj, name, arguments)
+{
+    var fn = obj[name];
+    if(typeof fn !== 'function')
+        return;
 
-// 	fetch_alloyeditor();
+    return (fn.apply(obj, arguments));
+}
 
-// 	for(var i = 0 ; i < libraries.length ; i++){
-// 		var obj = new Object();
+function generate_json(){
+	var god_obj = new Object();
 
-// 		obj.libraries[i] = 
-
-// 		obj.libraries[i] = 
-// 	}
+	for(var i = 0 ; i < libraries.length ; i++){
+		god_obj[libraries[i]] = runFunction(window, 'fetch_' + libraries[i]);
+	}
+	console.log(god_obj);
+}
 
 // 	JSON.stringify(obj);
 // }
