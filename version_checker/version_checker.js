@@ -8,6 +8,10 @@ var alloyeditor = ["https://raw.githubusercontent.com/liferay/liferay-portal/mas
 					"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-editor/frontend-editor-alloyeditor-web/package.json"
 					];
 
+var alloyui = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/modules/apps/frontend-js/frontend-js-aui-web/build.gradle",
+				"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-js/frontend-js-aui-web/build.gradle",
+				"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-js/frontend-js-aui-web/build.gradle"]
+
 var clay = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/modules/apps/frontend-js/frontend-js-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-js/frontend-js-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-js/frontend-js-web/build.gradle"];
@@ -18,7 +22,7 @@ var senna = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/mo
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-js/frontend-js-spa-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-js/frontend-js-spa-web/package.json"];
 
-var libraries = ["alloyeditor", "clay", "jquery", "senna"];
+var libraries = ["alloyeditor", "alloyui", "clay", "jquery", "senna"];
 
 // dynamic build above arrays later?
 // var url = "https://raw.githubusercontent.com/liferay/liferay-portal/";
@@ -78,6 +82,11 @@ function extract_string(str, regex){
 	return extract_version(str);
 }
 
+function form_link(link, content){
+	return "<a href='" + link + "'>" + content + "</a>";
+
+}
+
 // Fetch
 // Can use string builder...
 function fetch_library(arr, str){
@@ -89,14 +98,15 @@ function fetch_library(arr, str){
 		try{
 			var json = get_json(arr[i]);
 
-			obj[majors[i]] = extract_json(json, str);
+			obj[majors[i]] = form_link(arr[i], extract_json(json, str));
 		} catch (err) {
 			
 			// else not JSON
 			try{
 				var tmp_str = get_string(arr[i]);
-
-				if(str === "clay"){
+				if(str === "alloyui"){
+					regex = new RegExp("(alloyUIVersion = ).+");
+				} else if(str === "clay"){
 					regex = new RegExp("(lexiconVersion = ).+");
 				} else if(str === "jquery"){
 					regex = new RegExp("(jQueryVersion = ).+");
@@ -105,10 +115,10 @@ function fetch_library(arr, str){
 					throw err;
 				}
 
-				obj[majors[i]] = extract_string(tmp_str, regex);
+				obj[majors[i]] = form_link(arr[i], extract_string(tmp_str, regex));
 			} catch (err) {
 				// console.log("Failure at " + arr[i]);
-				obj[majors[i]] = "Unknown";
+				obj[majors[i]] = form_link(arr[i], "Unknown");
 			}
 		}
 	}
@@ -122,6 +132,9 @@ function fetch_library(arr, str){
 
 function fetch_alloyeditor(){
 	return fetch_library(alloyeditor, "alloyeditor");
+}
+function fetch_alloyui(){
+	return fetch_library(alloyui, "alloyui");
 }
 
 function fetch_clay(){
