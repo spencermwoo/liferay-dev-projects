@@ -179,10 +179,11 @@ function generate_json(){
 	var obj = fetch();
 	var json = JSON.stringify(obj);
 
-	console.log(json)
+	// console.log(json)
+	return json
 
 	// var file_path = config.searchInputFile;
 	// write_file('timestamp.json', json);
 
-	document.getElementById('rebuild2').disabled = true;
+	// document.getElementById('rebuild2').disabled = true;
 }
