@@ -1,24 +1,28 @@
 
 //majors length is always the same as each of these arrays -- perhaps I can make that explicit by design
 
-var majors = ["master", "7.1.x", "7.0.x"];
+var majors = ["master", "7.2.x", "7.1.x", "7.0.x"];
 
 var alloyeditor = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/modules/apps/frontend-editor/frontend-editor-alloyeditor-web/package.json", 
+					"https://raw.githubusercontent.com/liferay/liferay-portal/7.2.x/modules/apps/frontend-editor/frontend-editor-alloyeditor-web/package.json",
 					"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-editor/frontend-editor-alloyeditor-web/package.json",
 					"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-editor/frontend-editor-alloyeditor-web/package.json"
 					];
 
 var alloyui = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/modules/apps/frontend-js/frontend-js-aui-web/build.gradle",
+				"https://raw.githubusercontent.com/liferay/liferay-portal/7.2.x/modules/apps/frontend-js/frontend-js-aui-web/build.gradle",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-js/frontend-js-aui-web/build.gradle",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-js/frontend-js-aui-web/build.gradle"]
 
 var clay = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/modules/apps/frontend-js/frontend-js-web/package.json",
+				"https://raw.githubusercontent.com/liferay/liferay-portal/7.2.x/modules/apps/frontend-js/frontend-js-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-js/frontend-js-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-js/frontend-js-web/build.gradle"];
 
 // var jquery = clay;
 
 var senna = ["https://raw.githubusercontent.com/liferay/liferay-portal/master/modules/apps/frontend-js/frontend-js-spa-web/package.json", 
+				"https://raw.githubusercontent.com/liferay/liferay-portal/7.2.x/modules/apps/frontend-js/frontend-js-spa-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.1.x/modules/apps/frontend-js/frontend-js-spa-web/package.json",
 				"https://raw.githubusercontent.com/liferay/liferay-portal/7.0.x/modules/apps/foundation/frontend-js/frontend-js-spa-web/package.json"];
 
@@ -192,8 +196,8 @@ function generate_json(){
 	var obj = fetch();
 	var json = JSON.stringify(obj);
 
-	// console.log(json)
-	return json
+	console.log(json);
+	return json;
 
 	// var file_path = config.searchInputFile;
 	// write_file('timestamp.json', json);
