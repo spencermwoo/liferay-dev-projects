@@ -24,7 +24,7 @@ from contextlib import contextmanager
 timestamp = False
 
 # Debug prints are disabled.
-quiet = False
+quiet = True
 
 
 FILE_EXT = ".txt"
@@ -49,7 +49,11 @@ builtins.__print__ = print_flush
 # Help
 def print_help():
     print("USAGE : lb <bad_commit> <good_commit>")
-    print("\nhttps://git-scm.com/docs/git-bisect")
+    
+    print("")
+
+    print("CMDs : bad, good, reset, log")
+    # print("\nhttps://git-scm.com/docs/git-bisect")
 
 # Processes
 def git_checkout(commit):
@@ -105,8 +109,8 @@ def outer():
             num = int(length / 2)
             
             try:
-                with open(BISECT_FILENAME, encoding="UTF-8") as f:
-                    output = func(f, num, length)
+                with open(BISECT_FILENAME, encoding="UTF-8") as file:
+                    output = func(file, num, length)
             except FileNotFoundError:
                 sys.exit("You need to start bisect.")
                 
@@ -123,18 +127,18 @@ def outer():
 
 # Functional
 @outer()
-def bisect(f, num, length):
+def bisect(file, num, length):
     """ Liferay Bisect """
-    commit = f.readlines()[num]
+    commit = file.readlines()[num]
     steps = (int) (math.log(length, 2)) + 1
 
     print("\nSteps remaining : " + str(steps))
     return commit.split()[0]
 
 @outer()
-def bisect_bad(f, num, length):
+def bisect_bad(file, num, length):
     """ Liferay Bisect """
-    output = f.readlines()[:num+1]
+    output = file.readlines()[:num+1]
 
     output = ''.join(output)
 
@@ -143,9 +147,9 @@ def bisect_bad(f, num, length):
     return bisect()
 
 @outer()
-def bisect_good(f, num, length):
+def bisect_good(file, num, length):
     """ Liferay Bisect """
-    output = f.readlines()[num-1:]
+    output = file.readlines()[num-1:]
 
     output = ''.join(output)
 
@@ -227,10 +231,13 @@ def main():
 
             if cmd == commands[0]:
                 commit = bisect_bad()
+
             elif cmd == commands[1]:
                 commit = bisect_good()
+
             elif cmd == commands[2]:
                 commit = bisect()
+
             else:
                 sys.exit(LOG_FILENAME)
 
