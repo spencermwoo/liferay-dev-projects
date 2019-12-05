@@ -42,3 +42,9 @@ Here's a list of my favorites :
 | `c` | `http://webcache.googleusercontent.com/search?q=cache:%s` |
 | `gc` | `https://calendar.google.com/calendar/r` |
 | `re` | `http://reddit.com/r/%s` |
+
+
+| `sp` | https://github.com/SpencerWoo?tab=repositories |
+| `jj` | https://issues.liferay.com/browse/%s |
+| `re` | http://old.reddit.com/r/%s | 
+| `gc` | https://calendar.google.com/calendar/r?pli=1 | 
