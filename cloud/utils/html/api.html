@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.4" />
+<title>api API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>api</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from _settings import *
+from _utils import *
+
+# // Routes
+
+# /projects
+
+# DO NOT CALL THESE FUNCTIONS
+# These functiosn exist only for non-cloud {TARGET_DOMAIN}
+
+def _get_master_token(project_id: str):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/masterToken&#39;
+
+    response = get_url(url)
+
+    master_token = response[&#39;masterToken&#39;]
+    return master_token
+
+def _set_metadata(project_id: str, set_type: str):
+    set_domain = &#39;api.liferay.sh&#39;
+    master_token = _get_master_token(project_id)
+    url = f&#39;https://{set_domain}/projects/{project_id}/{master_token}&#39;
+
+    metadata = get_metadata(project_id, set_domain)
+
+    # this is default -- expand dynamic
+    metadata[&#39;type&#39;] = set_type
+
+    print(metadata)
+
+    data = f&#39;{{&#34;metadata&#34;: {metadata}}}&#39;
+
+    response = patch_url(url, data)
+
+    return response
+
+def _set_scale(project_id: str, scale: int, enabled: bool, service_id=&#39;liferay&#39;):
+    # set_autoscaling(&#39;lfrspencerwoo-prd&#39;, 2, True)
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/scale&#39;
+
+    enabled = map_to_str(enabled, True)
+    data = f&#39;{{&#34;scale&#34;: {scale}, &#34;canAutoscale&#34;: {enabled} }}&#39;
+
+    response = patch_url(url, data)
+
+    return response
+
+# VALID FUNCTIONS BELOW
+
+def get_metadata(project_id: str, set_domain: str=&#39;&#39;):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}&#39;
+
+    if set_domain:
+        url = f&#39;https://{set_domain}/projects/{project_id}&#39;    
+
+    response = get_url(url)
+
+    metadata = response[&#39;metadata&#39;]
+    return metadata
+
+def get_scale(project_id: str, service_id: str=&#39;liferay&#39;):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/scale&#39;
+
+    response = get_url(url)
+
+    return response
+
+def download_database_backup(id):
+    url = f&#39;&#39;
+    # curl -X POST /backup/download/database/:id -H &#39;Content-Type: application/json&#39; -H &#39;Authorization: Bearer USER_TOKEN&#39; --output database.tgz
+
+    response = get_url(url, data)
+
+    return response
+
+def list_project_service(project_id: str):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services&#39;
+
+    response = get_url(url)
+
+    return response
+
+def get_project_service(project_id: str, service_id: str=&#39;liferay&#39;):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}&#39;
+
+    response = get_url(url)
+
+    return response
+
+def restart_project_service(project_id, service_id):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/restart&#39;
+    data = &#39;&#39;
+
+    response = post_url(url, data)
+
+    return response
+
+def stop_project_service(project_id, service_id):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/restart&#39;
+    data = &#39;&#39;
+
+    response = post_url(url, data)
+
+    return response
+
+def post_hook(project_id: str, provider: str=&#39;github&#39;):
+    master_token = _get_master_token(project_id)
+    url = f&#39;https://{TARGET_DOMAIN}/hooks/providers/{provider}/build/{project_id}/{master_token}&#39;
+
+    #repository
+
+    data = &#39;${&#34;ref&#34;: &#34;refs/heads/master&#34;, &#34;repository&#34;: {full_name: SpencerWoo/lfrspencerwoo}, }&#39;
+
+    # response = requests.post(&#39;https://api.liferay.cloud/hooks/providers/github/build/lfrspencerwoo/856759bc-e05f-4f97-8641-1cf3a11fa959&#39;, headers=headers, data=data, auth=(&#39;user@domain.com&#39;, &#39;pass&#39;))
+
+    # data = &#39;{&#34;ref&#34;: &#34;refs/heads/master&#34;, &#34;repository&#34;: {full_name: &#34;SpencerWoo/lfrspencerwoo&#34;}}&#39;
+
+    # SpencerWoo/lfrspencerwoo
+    response = post_url(url, data)
+
+    return response
+
+def upload_backups(volume, other):
+    pass
+
+def download_backups(project_id):
+    pass
+
+def get_deployments(project_id: str, limit: bool=True):
+    if limit:
+        url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/deployments?limit=1&#39;
+    else:
+        url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/deployments&#39;
+
+    response = get_url(url)
+
+    return response
+
+def get_alerts(project_id:str, unread=False):
+    url = f&#39;https://{TARGET_DOMAIN}/alerts?projectId={project_id}&#39;
+
+    response = get_url(url)
+
+    return response
+
+def get_user_plans():
+    url = f&#39;https://{TARGET_DOMAIN}/plans/user&#39;
+
+    response = get_url(url)
+
+    return response
+
+# /admin
+
+def get_plans():
+    url = f&#39;https://{TARGET_DOMAIN}/admin/plans&#39;
+
+    response = get_url(url)
+
+    return response
+
+#id, ids, email, emails
+
+#
+# def get_users():
+#     url = f&#39;https://{TARGET_DOMAIN}/admin/users&#39;
+
+#     response = get_url(url)
+
+#     return response
+
+# ids, csv format
+def get_user(user_id):
+    # get_user(&#39;spencer.woo@liferay.cloud&#39;)
+    url = f&#39;https://{TARGET_DOMAIN}/admin/users/{user_id}&#39;
+
+    response = get_url(url)
+
+    return response
+
+def get_builds(user_id):
+    url = f&#39;https://{TARGET_DOMAIN}/admin/builds/{user_id}&#39;
+
+    response = get_url(url)
+
+    return response
+
+# type, limit, offset, field, order
+
+#admin utils
+def get_user_uid(user_id):
+    response = get_user(user_id)
+
+    return response[&#39;id&#39;]
+
+def get_usages():
+    url = f&#39;https://{TARGET_DOMAIN}/admin/usage&#39;
+
+    response = get_url(url)
+
+    return response
+
+def get_usage(user_uid):
+    usages = get_usages()
+
+    for usage in usages:
+
+        if usage[&#39;userId&#39;] == user_uid:
+            return usage
+
+    return response </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="api.download_backups"><code class="name flex">
+<span>def <span class="ident">download_backups</span></span>(<span>project_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def download_backups(project_id):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="api.download_database_backup"><code class="name flex">
+<span>def <span class="ident">download_database_backup</span></span>(<span>id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def download_database_backup(id):
+    url = f&#39;&#39;
+    # curl -X POST /backup/download/database/:id -H &#39;Content-Type: application/json&#39; -H &#39;Authorization: Bearer USER_TOKEN&#39; --output database.tgz
+
+    response = get_url(url, data)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_alerts"><code class="name flex">
+<span>def <span class="ident">get_alerts</span></span>(<span>project_id, unread=False)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_alerts(project_id:str, unread=False):
+    url = f&#39;https://{TARGET_DOMAIN}/alerts?projectId={project_id}&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_builds"><code class="name flex">
+<span>def <span class="ident">get_builds</span></span>(<span>user_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_builds(user_id):
+    url = f&#39;https://{TARGET_DOMAIN}/admin/builds/{user_id}&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_deployments"><code class="name flex">
+<span>def <span class="ident">get_deployments</span></span>(<span>project_id, limit=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_deployments(project_id: str, limit: bool=True):
+    if limit:
+        url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/deployments?limit=1&#39;
+    else:
+        url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/deployments&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_metadata"><code class="name flex">
+<span>def <span class="ident">get_metadata</span></span>(<span>project_id, set_domain='')</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_metadata(project_id: str, set_domain: str=&#39;&#39;):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}&#39;
+
+    if set_domain:
+        url = f&#39;https://{set_domain}/projects/{project_id}&#39;    
+
+    response = get_url(url)
+
+    metadata = response[&#39;metadata&#39;]
+    return metadata</code></pre>
+</details>
+</dd>
+<dt id="api.get_plans"><code class="name flex">
+<span>def <span class="ident">get_plans</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_plans():
+    url = f&#39;https://{TARGET_DOMAIN}/admin/plans&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_project_service"><code class="name flex">
+<span>def <span class="ident">get_project_service</span></span>(<span>project_id, service_id='liferay')</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_project_service(project_id: str, service_id: str=&#39;liferay&#39;):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_scale"><code class="name flex">
+<span>def <span class="ident">get_scale</span></span>(<span>project_id, service_id='liferay')</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_scale(project_id: str, service_id: str=&#39;liferay&#39;):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/scale&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_usage"><code class="name flex">
+<span>def <span class="ident">get_usage</span></span>(<span>user_uid)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_usage(user_uid):
+    usages = get_usages()
+
+    for usage in usages:
+
+        if usage[&#39;userId&#39;] == user_uid:
+            return usage
+
+    return response </code></pre>
+</details>
+</dd>
+<dt id="api.get_usages"><code class="name flex">
+<span>def <span class="ident">get_usages</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_usages():
+    url = f&#39;https://{TARGET_DOMAIN}/admin/usage&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_user"><code class="name flex">
+<span>def <span class="ident">get_user</span></span>(<span>user_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_user(user_id):
+    # get_user(&#39;spencer.woo@liferay.cloud&#39;)
+    url = f&#39;https://{TARGET_DOMAIN}/admin/users/{user_id}&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_user_plans"><code class="name flex">
+<span>def <span class="ident">get_user_plans</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_user_plans():
+    url = f&#39;https://{TARGET_DOMAIN}/plans/user&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.get_user_uid"><code class="name flex">
+<span>def <span class="ident">get_user_uid</span></span>(<span>user_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_user_uid(user_id):
+    response = get_user(user_id)
+
+    return response[&#39;id&#39;]</code></pre>
+</details>
+</dd>
+<dt id="api.list_project_service"><code class="name flex">
+<span>def <span class="ident">list_project_service</span></span>(<span>project_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def list_project_service(project_id: str):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services&#39;
+
+    response = get_url(url)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.post_hook"><code class="name flex">
+<span>def <span class="ident">post_hook</span></span>(<span>project_id, provider='github')</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def post_hook(project_id: str, provider: str=&#39;github&#39;):
+    master_token = _get_master_token(project_id)
+    url = f&#39;https://{TARGET_DOMAIN}/hooks/providers/{provider}/build/{project_id}/{master_token}&#39;
+
+    #repository
+
+    data = &#39;${&#34;ref&#34;: &#34;refs/heads/master&#34;, &#34;repository&#34;: {full_name: SpencerWoo/lfrspencerwoo}, }&#39;
+
+    # response = requests.post(&#39;https://api.liferay.cloud/hooks/providers/github/build/lfrspencerwoo/856759bc-e05f-4f97-8641-1cf3a11fa959&#39;, headers=headers, data=data, auth=(&#39;user@domain.com&#39;, &#39;pass&#39;))
+
+    # data = &#39;{&#34;ref&#34;: &#34;refs/heads/master&#34;, &#34;repository&#34;: {full_name: &#34;SpencerWoo/lfrspencerwoo&#34;}}&#39;
+
+    # SpencerWoo/lfrspencerwoo
+    response = post_url(url, data)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.restart_project_service"><code class="name flex">
+<span>def <span class="ident">restart_project_service</span></span>(<span>project_id, service_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def restart_project_service(project_id, service_id):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/restart&#39;
+    data = &#39;&#39;
+
+    response = post_url(url, data)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.stop_project_service"><code class="name flex">
+<span>def <span class="ident">stop_project_service</span></span>(<span>project_id, service_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def stop_project_service(project_id, service_id):
+    url = f&#39;https://{TARGET_DOMAIN}/projects/{project_id}/services/{service_id}/restart&#39;
+    data = &#39;&#39;
+
+    response = post_url(url, data)
+
+    return response</code></pre>
+</details>
+</dd>
+<dt id="api.upload_backups"><code class="name flex">
+<span>def <span class="ident">upload_backups</span></span>(<span>volume, other)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def upload_backups(volume, other):
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="api.download_backups" href="#api.download_backups">download_backups</a></code></li>
+<li><code><a title="api.download_database_backup" href="#api.download_database_backup">download_database_backup</a></code></li>
+<li><code><a title="api.get_alerts" href="#api.get_alerts">get_alerts</a></code></li>
+<li><code><a title="api.get_builds" href="#api.get_builds">get_builds</a></code></li>
+<li><code><a title="api.get_deployments" href="#api.get_deployments">get_deployments</a></code></li>
+<li><code><a title="api.get_metadata" href="#api.get_metadata">get_metadata</a></code></li>
+<li><code><a title="api.get_plans" href="#api.get_plans">get_plans</a></code></li>
+<li><code><a title="api.get_project_service" href="#api.get_project_service">get_project_service</a></code></li>
+<li><code><a title="api.get_scale" href="#api.get_scale">get_scale</a></code></li>
+<li><code><a title="api.get_usage" href="#api.get_usage">get_usage</a></code></li>
+<li><code><a title="api.get_usages" href="#api.get_usages">get_usages</a></code></li>
+<li><code><a title="api.get_user" href="#api.get_user">get_user</a></code></li>
+<li><code><a title="api.get_user_plans" href="#api.get_user_plans">get_user_plans</a></code></li>
+<li><code><a title="api.get_user_uid" href="#api.get_user_uid">get_user_uid</a></code></li>
+<li><code><a title="api.list_project_service" href="#api.list_project_service">list_project_service</a></code></li>
+<li><code><a title="api.post_hook" href="#api.post_hook">post_hook</a></code></li>
+<li><code><a title="api.restart_project_service" href="#api.restart_project_service">restart_project_service</a></code></li>
+<li><code><a title="api.stop_project_service" href="#api.stop_project_service">stop_project_service</a></code></li>
+<li><code><a title="api.upload_backups" href="#api.upload_backups">upload_backups</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.4</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+[
+    {
+        "_id": "5e28ebc0e243cd001502feef",
+        "createdAt": 1579740096749,
+        "id": "wljewpohxzmblyqnvm",
+        "metadata": {
+            "buildGroupUid": "87",
+            "groupUid": "87",
+            "deployGroupUid": "87",
+            "image": "gcr.io/liferaycloud/psjhvnh0n1021du026d30x3ej:87",
+            "imageHint": "liferaycloud/liferay-dxp:7.2.10-ga1-3.0.10",
+            "projectId": "lfrspencerwoo-prd",
+            "serviceId": "liferay",
+            "emailAddress": "spencer.woo@liferay.cloud",
+            "emailAddressHash": "c82ba8e47905731a94adb74709ec49bb",
+            "userName": "Spencer Woo",
+            "userInitials": "S"
+        },
+        "projectId": "lfrspencerwoo-prd",
+        "projectUid": "zkriwcnimtrqgcjmen",
+        "userId": "00u179e99zW3v17sg357",
+        "readBy": [],
+        "type": "DEPLOY_SUCCEEDED",
+        "build": {
+            "_id": "5e28eb2379ff40001564b768",
+            "createdAt": 1579739939401,
+            "id": "hyiwrkildpcicvptst",
+            "branch": "master",
+            "directory": "/tmp/wedeploy--clone--ABfCe6/liferay",
+            "buildGroupUid": "87",
+            "groupUid": "87",
+            "image": "gcr.io/liferaycloud/psjhvnh0n1021du026d30x3ej:87",
+            "imageHint": "liferaycloud/liferay-dxp:7.2.10-ga1-3.0.10",
+            "metadata": {
+                "commit": "7d6621d2b47bb5224d9c043e493c0a86b96bb74d",
+                "commitAuthor": "spencerwoo",
+                "commitAuthorEmail": "spencer.woo@liferay.com",
+                "commitRepository": "git@github.com:spencerwoo/liferaycloudsamples",
+                "commitBranch": "master",
+                "commitDate": 1578532906000,
+                "commitMessage": "autoscale",
+                "deploy": true,
+                "emailAddress": "spencer.woo@liferay.cloud",
+                "emailAddressHash": "c82ba8e47905731a94adb74709ec49bb",
+                "userInitials": "S",
+                "userName": "Spencer Woo",
+                "userId": "00u179e99zW3v17sg357"
+            },
+            "recipeType": "custom-image",
+            "projectId": "lfrspencerwoo-prd",
+            "projectUid": "zkriwcnimtrqgcjmen",
+            "repository": "http://git/lfrspencerwoo-prd",
+            "serviceId": "liferay",
+            "status": "SUCCEEDED",
+            "wedeploy": {
+                "kind": "Deployment",
+                "id": "liferay",
+                "image": "liferaycloud/liferay-dxp:7.2.10-ga1-3.0.10",
+                "memory": 8192,
+                "cpu": 6,
+                "ports": [
+                    {
+                        "port": 8080,
+                        "external": false
+                    }
+                ],
+                "readinessProbe": {
+                    "httpGet": {
+                        "path": "/c/portal/layout",
+                        "port": 8080
+                    },
+                    "initialDelaySeconds": 240
+                },
+                "livenessProbe": {
+                    "httpGet": {
+                        "path": "/c/portal/layout",
+                        "port": 8080
+                    },
+                    "initialDelaySeconds": 300
+                },
+                "dependencies": [
+                    "database",
+                    "search"
+                ],
+                "volumes": {
+                    "data": "/opt/liferay/data"
+                },
+                "environments": {
+                    "infra": {
+                        "deploy": false
+                    }
+                },
+                "autoscale": {
+                    "cpu": 10,
+                    "memory": 10
+                }
+            },
+            "environments": {
+                "infra": {
+                    "deploy": false
+                }
+            }
+        }
+    }
+]

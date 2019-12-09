@@ -1,0 +1,17 @@
+
+# TODO future
+
+* get hash for `.st`, `.sh`, `.dev`, `.cloud`, etc
+* easy deployment for above environments
+
+* scripts monitoring quotas -- instead of Daniel naively deleting databases every now and then repeatedly.
+* telepresence DNS
+
+* JIRA is not using Zendesk plugin properly -- linking
+How can I query https://issues.liferay.com/browse/LCPS-493 ?
+
+`https://issues.liferay.com/issues/?jql=project%20%3D%20LCPS%20and%20reporter%20%3D%20peter.simonyi%20and%20%22Customer%20Ticket%20Project%20Code%22%20~%20%22VODAFONEUKCP%22%20and%20%22Zendesk%20Ticket%20IDs%22%20%3D%20%2216833%22%20ORDER%20BY%20updated%20DESC`
+
+
+* GCP issues
+* Fix documentation
